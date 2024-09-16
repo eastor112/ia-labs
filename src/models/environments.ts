@@ -10,14 +10,18 @@ export class Entorno {
     this.casillas = { A: 'limpio', B: 'sucio' };
   }
 
-  ensuciar(): void {
+  ensuciar(): boolean {
+    let seEnsucio = false
     if (Math.random() < 0.1) {
+      seEnsucio = this.casillas.A === "limpio"
       this.casillas.A = 'sucio';
     }
 
     if (Math.random() < 0.1) {
+      seEnsucio = this.casillas.B === "limpio"
       this.casillas.B = 'sucio';
     }
+    return seEnsucio
   }
 
   limpiar(ubicacion: 'A' | 'B'): void {
@@ -34,7 +38,7 @@ export class Agente1 {
     this.puntaje = 0;
   }
 
-  actuar(entorno: Entorno): void {
+  actuar(entorno: Entorno): boolean {
     if (entorno.casillas[this.ubicacion] === 'sucio') {
       entorno.limpiar(this.ubicacion);
       this.puntaje -= 1;
@@ -46,14 +50,16 @@ export class Agente1 {
     Object.values(entorno.casillas).forEach(estado => {
       if (estado === 'limpio') this.puntaje += 1;
     });
+
+    return true
   }
 }
 
 export class Agente2 extends Agente1 {
-  actuar(entorno: Entorno): void {
+  actuar(entorno: Entorno): boolean {
     if (Math.random() < 0.5) {
-      return;
+      return false;
     }
-    super.actuar(entorno);
+    return super.actuar(entorno);
   }
 }

@@ -9,22 +9,37 @@ interface AgentSimulatorProps {
 }
 
 const AgentSimulator: React.FC<AgentSimulatorProps> = ({ agente, title }) => {
-  const [entorno, setEntorno] = useState<Entorno>(new Entorno());
+  const [entorno] = useState<Entorno>(new Entorno());
   const [pasos, setPasos] = useState<number>(0);
+  const [cambio, setCambio] = useState(false);
+  const [actuo, setActuo] = useState(false);
 
   const ejecutarPaso = () => {
-    entorno.ensuciar();
-    agente.actuar(entorno);
-    setEntorno(entorno);
+    const cambio = entorno.ensuciar();
+    if (cambio) {
+      setCambio(true);
+      return;
+    }
+    setCambio(false);
+
+    const actuo = agente.actuar(entorno);
+    setActuo(actuo);
+
     setPasos(pasos + 1);
   };
 
   const ejecutarNpasos = (n: number) => {
     for (let i = 0; i < n; i++) {
-      entorno.ensuciar();
+      const cambio = entorno.ensuciar();
+
+      if (cambio) {
+        setCambio(true);
+        i--;
+        continue;
+      }
+
       agente.actuar(entorno);
     }
-    setEntorno(entorno);
     setPasos(pasos + n);
   };
 
@@ -32,6 +47,14 @@ const AgentSimulator: React.FC<AgentSimulatorProps> = ({ agente, title }) => {
     <div className='flex flex-col items-center'>
       <h2>{title}</h2>
       <Board entorno={entorno} ubicacion={agente.ubicacion} />
+
+      {cambio && (
+        <small className='text-red-500'>Una de las casillas se ensució</small>
+      )}
+
+      {!actuo && pasos > 0 && (
+        <small className='text-red-500'>El agente no hizo nada</small>
+      )}
 
       <div className='mt-4'>
         <div className='mb-4'>
