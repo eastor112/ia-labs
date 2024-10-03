@@ -1,10 +1,14 @@
 import { Piece } from './Piece';
 
-export class Game {
+type PieceColor = 'white' | 'black';
+
+export class ChessGame {
   board: Array<Array<Piece | null>>;
+  currentTurn: PieceColor;
 
   constructor() {
     this.board = this.initializeBoard();
+    this.currentTurn = 'white';
   }
 
   private initializeBoard(): Array<Array<Piece | null>> {
@@ -53,5 +57,13 @@ export class Game {
 
   getBoard(): Array<Array<Piece | null>> {
     return this.board;
+  }
+
+  nextTurn(): void {
+    this.currentTurn = this.currentTurn === 'white' ? 'black' : 'white';
+  }
+
+  getCurrentTurn(): PieceColor {
+    return this.currentTurn;
   }
 }
