@@ -1,22 +1,16 @@
 interface SquareProps {
   isBlack: boolean;
   children: React.ReactNode;
-  row: number;
-  col: number;
+  onClick?: () => void;
 }
 
-const Square: React.FC<SquareProps> = ({ isBlack, children, row, col }) => {
+const Square: React.FC<SquareProps> = ({ isBlack, children, onClick }) => {
   const style = {
     width: '60px',
     height: '60px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-  };
-
-  const onClick = () => {
-    console.log('touched!!');
-    console.log(row, col);
   };
 
   return (

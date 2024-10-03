@@ -1,6 +1,6 @@
 import { Piece } from './Piece';
 
-type PieceColor = 'white' | 'black';
+export type PieceColor = 'white' | 'black';
 
 export class ChessGame {
   board: Array<Array<Piece | null>>;
@@ -65,5 +65,29 @@ export class ChessGame {
 
   getCurrentTurn(): PieceColor {
     return this.currentTurn;
+  }
+
+  movePiece(fromRow: number, fromCol: number, toRow: number, toCol: number): boolean {
+    const piece = this.board[fromRow][fromCol];
+
+    if (!piece) {
+      return false;
+    }
+
+    if (piece.color !== this.currentTurn) {
+      return false;
+    }
+
+    const destination = this.board[toRow][toCol];
+    if (destination && destination.color === piece.color) {
+      return false;
+    }
+
+    this.board[toRow][toCol] = piece;
+    this.board[fromRow][fromCol] = null;
+
+    this.nextTurn();
+
+    return true;
   }
 }

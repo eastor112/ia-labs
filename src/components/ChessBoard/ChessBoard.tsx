@@ -1,10 +1,18 @@
 import React from 'react';
 import { Piece } from '../Chess/Piece';
 import Square from './Square';
+import { PieceColor } from '../Chess/Game';
 
-const ChessBoard: React.FC<{ squares: Array<Array<Piece | null>> }> = ({
-  squares,
-}) => {
+interface ChessBoardProps {
+  squares: Array<Array<Piece | null>>;
+  onSquareClick: (
+    row: number,
+    col: number,
+    color: PieceColor | undefined
+  ) => void;
+}
+
+const ChessBoard: React.FC<ChessBoardProps> = ({ squares, onSquareClick }) => {
   const columnLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
   return (
@@ -49,8 +57,9 @@ const ChessBoard: React.FC<{ squares: Array<Array<Piece | null>> }> = ({
                 <Square
                   key={`${rowIndex}-${colIndex}`}
                   isBlack={isBlack}
-                  row={rowIndex}
-                  col={colIndex}
+                  onClick={() =>
+                    onSquareClick(rowIndex, colIndex, piece?.color)
+                  }
                 >
                   {piece && (
                     <img
