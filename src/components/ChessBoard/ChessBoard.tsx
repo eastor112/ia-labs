@@ -8,7 +8,9 @@ const ChessBoard: React.FC<{ squares: Array<Array<Piece | null>> }> = ({
   const columnLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: "center" }}>
+    <div
+      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+    >
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         {columnLabels.map((label, index) => (
           <div
@@ -44,7 +46,12 @@ const ChessBoard: React.FC<{ squares: Array<Array<Piece | null>> }> = ({
             row.map((piece, colIndex) => {
               const isBlack = (rowIndex + colIndex) % 2 === 1;
               return (
-                <Square key={`${rowIndex}-${colIndex}`} isBlack={isBlack}>
+                <Square
+                  key={`${rowIndex}-${colIndex}`}
+                  isBlack={isBlack}
+                  row={rowIndex}
+                  col={colIndex}
+                >
                   {piece && (
                     <img
                       src={piece.img}
